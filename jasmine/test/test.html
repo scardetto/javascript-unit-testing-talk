@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Jasmine DOM Tests Spec Runner</title>
+
+  <link rel="stylesheet" type="text/css" href="../vendor//jasmine.css">
+
+  <script type="text/javascript" src="../vendor/jasmine.js"></script>
+  <script type="text/javascript" src="../vendor/jasmine-html.js"></script>
+  <script type="text/javascript" src="../vendor/boot.js"></script>
+  <script type="text/javascript" src="../vendor/jquery.js"></script>
+  <script type="text/javascript" src="../vendor/jasmine-jquery.js"></script>
+  <script type="text/javascript" src="../lib/hello_world.js"></script>
+
+  <script type="text/javascript">
+    function setUpHTMLFixture() {
+      setFixtures('<div>'
+                  +'  <label for="name">Please enter your name:</label>'
+                  +'  <input id="name" type="text"/>'
+                  +'  <input id="sayHello" type="button" value="Say Hello!"/>'
+                  +'  <input id="sayHelloAsync" type="button" value="Say Hello Async!"/>'
+                  +'  <span id="greeting"></span>'
+                  +'  <span id="greetingAsync"></span>'
+                  +'</div>');
+    }
+
+    describe("DOM Tests", function() {
+      describe("Sync Tests", function() {
+        beforeEach(function() {
+          setUpHTMLFixture();
+          helloWorld.init();
+        });
+
+        it("should say hello synchronously", function() {
+          $('#name').val('Rob');
+          $('#sayHello').trigger('click');
+
+          expect($('#greeting').text()).toEqual('Hello, Rob');
+        })
+      });
+
+      describe("Async Tests", function() {
+        beforeEach(function() {
+          setUpHTMLFixture();
+          helloWorld.init();
+        });
+
+        it("should say hello asynchronously", function(done) {
+          $('#name').val('Robert');
+          $('#sayHelloAsync').trigger('click');
+
+          setTimeout(function() {
+            expect($('#greetingAsync').text()).toEqual('Hello, Robert');
+            done();
+          });
+        })
+      });
+    });
+  </script>
+</head>
+<body>
+</body>
+</html>

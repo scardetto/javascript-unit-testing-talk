@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>QUnit Example</title>
+  <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.16.0.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+
+  <div>
+    <label for="name">Please enter your name:</label>
+    <input id="name" type="text"/>
+    <input id="sayHello" type="button" value="Say Hello!"/>
+    <input id="sayHelloAsync" type="button" value="Say Hello Async!"/>
+    <span id="greeting"></span>
+    <span id="greetingAsync"></span>
+  </div>
+
+  <script src="http://code.jquery.com/qunit/qunit-1.16.0.js"></script>
+  <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <script src="../lib/hello_world.js"></script>
+
+  <script>
+    QUnit.module("Sync Tests");
+    QUnit.test("Should say hello", function(assert) {
+      $('#name').val('Rob');
+      $('#sayHello').trigger('click');
+
+      assert.equal($('#greeting').text(), 'Hello, Rob', 'Expected value');
+    });
+
+    QUnit.module("Async Tests");
+    QUnit.test("Should say hello async", function(assert) {
+      var done = assert.async();
+
+      $('#name').val('Robert');
+      $('#sayHelloAsync').trigger('click');
+
+      setTimeout(function() {
+        assert.equal($('#greetingAsync').text(), 'Hello, Robert', 'Expected value');
+        done();
+      });
+    });
+  </script>
+</body>
+</html>
